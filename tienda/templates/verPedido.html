@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container text-center mt-2">
+    <h1>Detalle pedido</h1>
+</div>
+<div class="container text-center">
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Número de Pedido</th>
+                <th>Estado del Pedido</th>
+                <th>Cliente</th>
+                <th>Nombre producto</th>
+                <th>Precio</th>
+                <th>Descripción</th>
+                <th>SKU</th>
+                <th>Imagen</th>
+                <th>Estado Pedido</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in productos_con_pedido %}
+            <tr>
+                <td>{{ producto.pedido.id }}</td>
+                <td>{{ producto.pedido.get_estado_pedido_display }}</td>
+                <td>{{ producto.pedido.usuario.username }}</td>
+                <td>{{ producto.nombre}}</td>
+                <td>${{ producto.precio|floatformat:"1g" }}</td>
+                <td>{{ producto.descripcion }}</td>
+                <td>{{ producto.sku }}</td>
+                <td>
+                    {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}"
+                        alt="{{ producto.nombre }}" width="100">
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'cambiarEstadoPedido' producto.pedido.id %}" class="btn btn-primary">
+                        Cambiar
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

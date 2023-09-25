@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container text-center mt-2">
+    <h1>Listado de Pedidos</h1>
+</div>
+<div class="container text-center">
+    <table class="table table-hover table-bordered">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <thead>
+            <tr>
+                <th>Número de Pedido</th>
+                <th>Estado del Pedido</th>
+                <th>Nombre producto</th>
+                <th>Precio</th>
+                <th>Descripción</th>
+                <th>SKU</th>
+                <th>Imagen</th>
+                <th>Detalle</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in productos_con_pedido %}
+            <tr>
+                <td>{{ producto.pedido.id }}</td>
+                <td>{{ producto.pedido.get_estado_pedido_display }}</td>
+                <td>{{ producto.nombre}}</td>
+                <td>${{ producto.precio|floatformat }}</td>
+                <td>{{ producto.descripcion }}</td>
+                <td>{{ producto.sku }}</td>
+                <td>
+                    {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}"
+                        alt="{{ producto.nombre }}" width="100">
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'ver-pedido' producto.pedido.id %}" class="btn btn-primary">Ver</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

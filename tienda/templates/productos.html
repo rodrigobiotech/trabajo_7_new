@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container text-center mt-2">
+    <h1>Listado Productos</h1>
+</div>
+<div id="productos" class="container text-center">
+    <div class="row row-cols-1 row-cols-md-3 d-flex">
+        {% for producto in productos %}
+        <div class="col mb-4 d-flex">
+            <div class="card flex-fill">
+                <div class="card-body">
+                    <h5 class="card-title">{{producto.nombre}}</h5>
+                    <p class="card-text">${{producto.precio}}</p>
+                    <p class="card-text">{{producto.descripcion}}</p>
+                    <p class="card-text">Código: {{producto.sku}}</p>
+                    {% if producto.disponible == True %}
+                        <p class="card-text">Disponible</p>
+                    {% else %}
+                    <p class="card-text">No Disponible</p>
+                    {% endif %}
+                    <a href="{% url 'hacer-pedido' producto.id %}" class="btn btn-primary">
+                        Agregar <i class="bi bi-bag-plus-fill"></i>
+                    </a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:3 and not forloop.last %}
+    </div><div class="row row-cols-1 row-cols-md-3 d-flex">
+        {% endif %}
+        {% endfor %}
+</div>
+
+{% endblock %}
